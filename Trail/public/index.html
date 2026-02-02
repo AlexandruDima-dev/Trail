@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome To Trail</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  color: #fff;
+  background-color: #111;
+  overflow-x: hidden;
+}
+
+.navbar {
+  width: 100%;
+  padding: 20px 40px;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+.navbar .logo h2 {
+  color: #fff;
+  margin-right: 10px;
+}
+
+.navbar .nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.navbar .nav-links li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+.HERO {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.video-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-content img {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+.hero-content h2 {
+  font-size: clamp(4rem, 10vw, 6rem);
+  letter-spacing: 6px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.hero-content button {
+  margin: 10px;
+  padding: 16px 40px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.hero-content button:first-of-type {
+  background: #2e7e00;
+  color: #fff;
+}
+
+.hero-content button:last-of-type {
+  background: transparent;
+  border: 2px solid #2e7e00;
+  color: #2e7e00;
+}
+
+.hero-content button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.About-us {
+  background-color: #556b2f;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 80px 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s ease-out;
+}
+
+.About-us.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.About-us h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.Content {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+}
+
+.About-us img {
+  max-width: 500px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+@media(max-width: 900px){
+  .About-us {
+    flex-direction: column;
+    text-align: center;
+  }
+  .About-us img {
+    max-width: 80%;
+  }
+  .hero-content h2 {
+    font-size: clamp(3rem, 10vw, 5rem);
+  }
+  .hero-content button {
+    width: 140px;
+  }
+  .navbar .nav-links {
+    display: none;
+  }
+  .menu-toggle {
+    display: block;
+  }
+}
+
+.Why-us {
+  background-color: #3e5d1c;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 80px 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  color: #fff;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s ease-out;
+}
+
+.Why-us.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.Why-us h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.Why-us img {
+  max-width: 500px;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+@media(max-width: 900px){
+  .Why-us {
+    flex-direction: column;
+    text-align: center;
+  }
+  .Why-us img {
+    max-width: 80%;
+  }
+}
+
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="logo">
+      <h2>TRAIL</h2>
+      <img alt="Logo" src="/Images/White Logo.png">
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#">Login</a></li>
+    <li><a href="#">Sign In</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+
+  <div class="menu-toggle" id="menuToggle">☰</div>
+</nav>
+
+<div class="HERO">
+  <div class="video-container">
+    <video autoplay muted loop playsinline>
+      <source src="/Video/Trail Hero Video (1).mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <div class="hero-content">
+    <img src="/Images/Normal Logo.png" alt="Trail Logo">
+    <h2>TRAIL</h2>
+    <button>Sign In</button>
+    <button>Login</button>
+  </div>
+</div>
+
+<div class="About-us" id="about">
+  <div class="Content">
+      <h2>About Us!</h2>
+      <p>Trail is a web app built for people who love hiking but don’t love spending ages searching for the right route. It helps you quickly find trails near you that match your experience level, preferred distance, and difficulty. Trail provides clear ratings, estimated completion times, elevation, and easy-to-understand descriptions. You can save favorites, submit condition reports, and plan safely. Offline support, light/dark mode, and a clean interface make Trail simple and helpful for every hiker.</p>
+  </div>
+  <img src="/Images/aboutus.jpg" alt="About Trail">
+</div>
+
+
+<div class="Why-us" id="whyus">
+  <div class="Content">
+      <h2>Why Choose Trail?</h2>
+      <p>Trail is designed to make hiking simple, safe, and enjoyable. We provide clear difficulty ratings, estimated times, and real-time trail conditions. Save your favorite trails, plan adventures offline, and get personalized recommendations. Trail helps you make informed choices so every hike is an unforgettable experience, whether you’re a beginner or an expert hiker.</p>
+  </div>
+  <img src="/Images/whyus.jpg" alt="Why Choose Trail">
+</div>
+
+
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const navLinks = document.getElementById("navLinks");
+  const aboutSection = document.getElementById('about');
+
+  menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("show");
+  });
+
+  window.addEventListener('scroll', () => {
+    const triggerPoint = window.innerHeight / 1.3;
+    const aboutTop = aboutSection.getBoundingClientRect().top;
+
+    if (aboutTop < triggerPoint) {
+      aboutSection.classList.add('show');
+    }
+  });
+</script>
+
+<script>
+    const whySection = document.getElementById('whyus');
+
+window.addEventListener('scroll', () => {
+  const triggerPoint = window.innerHeight / 1.3;
+
+  const aboutTop = aboutSection.getBoundingClientRect().top;
+  if (aboutTop < triggerPoint) {
+    aboutSection.classList.add('show');
+  }
+
+  const whyTop = whySection.getBoundingClientRect().top;
+  if (whyTop < triggerPoint) {
+    whySection.classList.add('show');
+  }
+});
+</script>
+</body>
+</html>
+
+
+
+
