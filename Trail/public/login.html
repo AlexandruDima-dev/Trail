@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login To Trail</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .navbar {
+        width: 100%;
+        padding: 20px 40px;
+        position: fixed;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0,0,0,0.5);
+        z-index: 10;
+        }
+
+        .navbar .logo h2 {
+        color: #fff;
+        margin-right: 10px;
+        }
+
+        .navbar .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 20px;
+        }
+
+        .navbar .nav-links li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        }
+
+        .menu-toggle {
+        display: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+  <div class="logo">
+      <h2>TRAIL</h2>
+      <img alt="Logo" src="/Images/White Logo.png">
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#">Login</a></li>
+    <li><a href="#">Sign In</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+
+  <div class="menu-toggle" id="menuToggle">☰</div>
+</nav>
+
+    
+</body>
+</html>

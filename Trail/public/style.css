@@ -79,6 +79,31 @@ body {
   cursor: pointer;
 }
 
+/* Footer */
+
+footer{
+  display: flex;
+  padding: 60px;
+}
+
+footer img{
+  width: 50px;
+}
+
+footer h2{
+  display: flex;
+  font-size: 40px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  float: left;
+}
+
+footer p{
+  display: flex;
+  justify-content: left;
+  align-self: first baselin;
+
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
   .nav-links {
@@ -86,7 +111,7 @@ body {
     position: absolute;
     top: 64px;
     right: 0;
-    background: #205800;
+    background: #30303083;
     flex-direction: column;
     width: 200px;
     padding: 16px;
