@@ -108,6 +108,8 @@ footer p{
 @media (max-width: 768px) {
   .nav-links {
     border-radius: 14px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
     position: absolute;
     top: 64px;
     right: 0;
@@ -116,6 +118,7 @@ footer p{
     width: 200px;
     padding: 16px;
     display: none;
+    margin-top: 19px;
   }
 
   .nav-links.show {
