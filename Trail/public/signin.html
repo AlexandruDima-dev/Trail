@@ -127,7 +127,9 @@
 <!-- MAIN BODY -->
 
 <form id="form" action="/login" method="post" class="login">
-    <h2>Start Your Journey</h2><br>
+    <h2>Welcome to Trail</h2><br>
+    <label>Username</label><br>
+    <input id="username" type="text" name="username"><br>
     <label>Email</label><br>
     <input id="email" type="email" name="email"><br>
     <label>Password</label><br>
@@ -138,6 +140,7 @@
 </form>
 
 <script>
+    const user = document.getElementById("username")
     const password = document.getElementById("pass")
     const email = document.getElementById("email")
     const messages = document.getElementById("message")
@@ -146,8 +149,8 @@
     form.addEventListener("submit", (e)=>{
         let message = []
 
-        if(email.value === ""|| email.value == null){
-            message.push("Please Enter Your Email")
+        if(user.value === ""|| user.value == null){
+            message.push("Please Enter Your Username")
         }else if(password.value === ""|| password.value == null){
             message.push("Please Enter Your Password")
         }
