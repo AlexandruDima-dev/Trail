@@ -7,9 +7,16 @@
     <link rel="stylesheet" href="/style.css">
     <style>
 
-        body{
-            background-image: url();
+        body {
+        display: flex;
+        flex-direction: column;
+        background-image: url("/Images/login.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
         }
+
         .navbar {
         width: 100%;
         padding: 20px 40px;
@@ -46,6 +53,35 @@
         color: #fff;
         }
 
+        .login{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-self: center;
+
+            background-color: #2e7e00a2;
+            margin-top: 200px;
+
+            max-width: 400px;
+            min-width: 300px;
+
+            color: #fff;
+            padding: 60px;
+            border-radius: 14px;
+            box-shadow: 0 10px 14px #000000;
+            outline:2px solid #008b07;
+        }
+
+        .login input{
+            border-radius: 6px;
+            outline: none;
+            border: none;
+        }
+
+        .login button{
+            
+        }
+
         
 
     </style>
@@ -65,6 +101,19 @@
 
   <div class="menu-toggle" id="menuToggle">☰</div>
 </nav>
+
+<!-- MAIN BODY -->
+
+<form id="form" action="/login" method="post" class="login">
+    <h2>Start Your Journey</h2><br>
+    <label>Email</label><br>
+    <input id="email" type="email" name="email"><br>
+    <label>Password</label><br>
+    <input id="pass" type="password" name="password"><br><br>
+    <button>Submit</button>
+    <p id="message"></p>
+
+</form>
 
     
 </body>
