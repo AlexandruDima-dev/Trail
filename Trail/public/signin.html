@@ -129,11 +129,11 @@
 <form id="form" action="/login" method="post" class="login">
     <h2>Welcome to Trail</h2><br>
     <label>Username</label><br>
-    <input id="username" type="text" name="username"><br>
+    <input id="username" type="text" name="username" ><br>
     <label>Email</label><br>
-    <input id="email" type="email" name="email"><br>
+    <input id="email" type="email" name="email" ><br>
     <label>Password</label><br>
-    <input id="pass" type="password" name="password"><br><br>
+    <input id="pass" type="password" name="password" ><br><br>
     <button id="submit">Submit</button><br>
     <p id="message" ></p>
 
@@ -151,8 +151,14 @@
 
         if(user.value === ""|| user.value == null){
             message.push("Please Enter Your Username")
-        }else if(password.value === ""|| password.value == null){
+        }else if(email.value === ""|| email.value == null){
+            message.push("Please Enter Your Email")
+        } else if(password.value === "" || password.value == null){
             message.push("Please Enter Your Password")
+        } else if (password.length < 6){
+            message.push("Your Password Isnt Long Enough")
+        } else if(!password.includes("@") || !password.includes(".com")){
+            message.push("Enter a Vaild Password")
         }
         if(message.length > 0){
             e.preventDefault()
