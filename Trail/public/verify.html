@@ -60,8 +60,8 @@
             justify-content: center;
             align-self: center;
 
-            background-color: #2e7e0081;
-            backdrop-filter: blur(20px);
+            background-color: #2e7e00;
+            backdrop-filter: blur(5px);
             margin-top: 200px;
 
             max-width: 400px;
@@ -117,11 +117,6 @@
       <img alt="Logo" src="Images/White Logo.png">
   </div>
 
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#">Login</a></li>
-    <li><a href="#">Sign Up</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
 
   <div class="menu-toggle" id="menuToggle">☰</div>
 </nav>
@@ -129,56 +124,14 @@
 <!-- MAIN BODY -->
 
 <form id="form" action="/login" method="post" class="login">
-    <h2>Welcome to Trail</h2><br>
-    <label>Username</label><br>
-    <input id="username" type="text" name="username" ><br>
+    <h2>Verify Your Acount</h2><br>
     <label>Email</label><br>
-    <input id="email" type="email" name="email" ><br>
-    <label>Password</label><br>
-    <input id="pass" type="password" name="password" ><br><br>
+    <input id="code" type="text" name="code "><br><br>
+    <p>We have sent a verfication code to <p id="email"></p></p><br>
     <button id="submit">Submit</button><br>
     <p id="message" ></p>
 
 </form>
-
-<script>
-    const user = document.getElementById("username")
-    const password = document.getElementById("pass")
-    const email = document.getElementById("email")
-    const messages = document.getElementById("message")
-    const form = document.getElementById("form")
-
-    form.addEventListener("submit", (e)=>{
-        let message = []
-        const specialChar = /[!@#$%^&*(),.?":{}|<>]/
-        const letter = /[A-Za-z]/
-        const number = /[0-9]/
-
-        if(user.value === ""|| user.value == null){
-            message.push("Please Enter Your Username")
-        }else if(email.value === ""|| email.value == null){
-            message.push("Please Enter Your Email")
-        } else if(password.value === "" || password.value == null){
-            message.push("Please Enter Your Password")
-        } else if (password.value.length < 6){
-            message.push("Your Password Isnt Long Enough")
-        } else if(!email.value.includes("@") || !email.value.includes(".com")){
-            message.push("Enter a Vaild Email")
-        } else if(!specialChar.test(password.value)){
-            message.push("Please Include A Special Charater")
-        } else if(!letter.test(password.value)){
-            message.push("Please Include Letters In The Password")
-        } else if (!number.test(password.value)){
-            message.push("Please Include A Number")
-        }
-        if(message.length > 0){
-            e.preventDefault()
-            messages.innerText = message.join(",")
-        }
-
-    })
-</script>
-
     
 </body>
 </html>

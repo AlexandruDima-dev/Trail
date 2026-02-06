@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tell Us About You | Trail</title>
+    <link rel="icon" href="Images/Normal Logo.png">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+
+            background-image: url("Images/login.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+
+        .navbar {
+        width: 100%;
+        padding: 20px 40px;
+        position: fixed;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0,0,0,0.5);
+        z-index: 10;
+        }
+
+        .navbar .logo h2 {
+        color: #fff;
+        margin-right: 10px;
+        }
+
+        .navbar .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 20px;
+        }
+
+        .navbar .nav-links li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        }
+
+        .menu-toggle {
+        display: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #fff;
+        }
+
+        .title-level{
+            display: flex;
+            flex-direction: column;
+            align-self: center;
+            text-align: center;
+            padding: 40px;
+            margin-top: 100px;
+            color: #fff;
+
+            background-color: #2e7e0094;
+            backdrop-filter: blur(5px);
+            
+            border-radius: 14px;
+            box-shadow: 0 10px 14px #1a1a1a;
+            max-width: 500px;
+            min-width: 250px;
+        }
+
+        .title-level h2{
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .difficulty-class{
+            display: flex;
+            flex-direction: column;
+            max-width: 500px;
+
+            min-width: 255px;
+            text-align: center;
+            align-self: center;
+            padding: 40px;
+            border-radius: 14px;
+
+            background-color:#2e7e009f ;
+            backdrop-filter: blur(5px);
+            margin-top: 30px;
+            color: #fff;
+            box-shadow: 0 10px 14px #1a1a1a;
+        }
+
+        .difficulty-class h3{
+            font-size: 20px;
+
+        }
+
+
+        .options{
+            display: flex;
+            flex-direction: row;
+        }
+
+        .options input{
+            margin: 1%;
+            background-color: aliceblue;
+        }
+
+                /* Hide the real checkbox */
+        .options input[type="checkbox"] {
+            display: none;
+        }
+
+        /* Style the labels like buttons */
+        .options label {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 2px solid #00ff66;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: white;
+            color: #ff9900;
+            font-weight: bold;
+        }
+
+        /* Hover effect */
+        .options label:hover {
+            background-color: #ff9900;
+            color: white;
+        }
+
+        /* Checked effect */
+        .options input[type="checkbox"]:checked + label {
+            background-color: #ff9900;
+            color: white;
+        }
+
+
+
+
+
+
+        @media(max-width: 768px ){
+            .title-level{
+                margin-top: 100px;
+                margin-left: 20px;
+                margin-right: 20px;
+                
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+  <div class="logo">
+      <h2>TRAIL</h2>
+      <img alt="Logo" src="Images/White Logo.png">
+  </div>
+  <div class="menu-toggle" id="menuToggle">☰</div>
+</nav>
+
+<div id="title" class="title-level">
+    <h2>Tell Us About You</h2>
+    <p>Tell Us About Yourself So We Can Recomend Your trails</p>
+</div>
+
+<div id="difficulty" class="difficulty-class">
+    <h3>Exprience Level</h3><br>
+    <div class="options">
+        <label for="beginner">Beginner</label>
+        <input type="checkbox" name="beginner" value="beginner">
+        <label for="Intermediate">Intermediate</label>
+        <input type="checkbox" name="Intermediate" value="Intermediate"> 
+        <label for="Advanced">Advanced</label>
+        <input type="checkbox" name="Advanced" value="Advanced"> 
+        <label for="Expert">Expert</label>
+        <input type="checkbox" name="Expert" value="Expert"> 
+    </div>
+</div>
+    
+</body>
+</html>
