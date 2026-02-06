@@ -1,194 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tell Us About You | Trail</title>
-    <link rel="icon" href="Images/Normal Logo.png">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tell Us About You | Trail</title>
+<link rel="icon" href="Images/Normal Logo.png">
 
-    <style>
-        body{
-            display: flex;
-            flex-direction: column;
+<style>
+body{
+    display: flex;
+    flex-direction: column;
 
-            background-image: url("Images/login.jpg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 100vh;
-        }
+    background-image: url("Images/login.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
 
-        .navbar {
-        width: 100%;
-        padding: 20px 40px;
-        position: fixed;
-        top: 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: rgba(0,0,0,0.5);
-        z-index: 10;
-        }
+/* NAVBAR */
+.navbar {
+    width: 100%;
+    padding: 20px 40px;
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.5);
+    z-index: 10;
+}
 
-        .navbar .logo h2 {
-        color: #fff;
-        margin-right: 10px;
-        }
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
 
-        .navbar .nav-links {
-        display: flex;
-        list-style: none;
-        gap: 20px;
-        }
+.logo h2 {
+    color: #fff;
+}
 
-        .navbar .nav-links li a {
-        color: #fff;
-        text-decoration: none;
-        font-weight: 600;
-        }
+.logo img{
+    width:40px;
+}
 
-        .menu-toggle {
-        display: none;
-        font-size: 2rem;
-        cursor: pointer;
-        color: #fff;
-        }
+.menu-toggle {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #fff;
+}
 
-        .title-level{
-            display: flex;
-            flex-direction: column;
-            align-self: center;
-            text-align: center;
-            padding: 40px;
-            margin-top: 100px;
-            color: #fff;
+/* TITLE BOX */
+.title-level{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    text-align: center;
+    padding: 40px;
+    margin-top: 100px;
+    color: #fff;
 
-            background-color: #2e7e0094;
-            backdrop-filter: blur(5px);
-            
-            border-radius: 14px;
-            box-shadow: 0 10px 14px #1a1a1a;
-            max-width: 500px;
-            min-width: 250px;
-        }
+    background-color: #2e7e0094;
+    backdrop-filter: blur(5px);
 
-        .title-level h2{
-            font-size: 40px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
+    border-radius: 14px;
+    box-shadow: 0 10px 14px #1a1a1a;
+    max-width: 500px;
+    min-width: 250px;
+}
 
-        .difficulty-class{
-            display: flex;
-            flex-direction: column;
-            max-width: 500px;
+.title-level h2{
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
 
-            min-width: 255px;
-            text-align: center;
-            align-self: center;
-            padding: 40px;
-            border-radius: 14px;
+/* DIFFICULTY BOX */
+.difficulty-class{
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    min-width: 255px;
+    text-align: center;
+    align-self: center;
+    padding: 40px;
+    border-radius: 14px;
 
-            background-color:#2e7e009f ;
-            backdrop-filter: blur(5px);
-            margin-top: 30px;
-            color: #fff;
-            box-shadow: 0 10px 14px #1a1a1a;
-        }
+    background-color:#2e7e009f;
+    backdrop-filter: blur(5px);
+    margin-top: 30px;
+    color: #fff;
+    box-shadow: 0 10px 14px #1a1a1a;
+}
 
-        .difficulty-class h3{
-            font-size: 20px;
+.options{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
-        }
+/* Hide real checkbox */
+.options input[type="checkbox"] {
+    display: none;
+}
 
+/* Button Style */
+.options label {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
 
-        .options{
-            display: flex;
-            flex-direction: row;
-        }
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    background-color: #2e7e00;
+    color: #fff;
+    font-weight: bold;
+}
 
-        .options input{
-            margin: 1%;
-            background-color: aliceblue;
-        }
+.options label:hover {
+    background-color: #7a7a7a;
+}
 
-                /* Hide the real checkbox */
-        .options input[type="checkbox"] {
-            display: none;
-        }
+/* Checked Style */
+.options input[type="checkbox"]:checked + label {
+    background-color: #1a1a1a;
+}
 
-        /* Style the labels like buttons */
-        .options label {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 5px;
-
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            background-color: #2e7e00;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        /* Hover effect */
-        .options label:hover {
-            background-color: #7a7a7a;
-            color: rgb(255, 255, 255);
-        }
-
-        /* Checked effect */
-        .options input[type="checkbox"]:checked + label {
-            background-color: #1a1a1a;
-            color: white;
-        }
-
-
-
-
-
-
-        @media(max-width: 768px ){
-            .title-level{
-                margin-top: 100px;
-                margin-left: 20px;
-                margin-right: 20px;
-                
-            }
-        }
-
-
-    </style>
+/* MOBILE */
+@media(max-width: 768px ){
+    .title-level{
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <nav class="navbar">
-  <div class="logo">
-      <h2>TRAIL</h2>
-      <img alt="Logo" src="Images/White Logo.png">
-  </div>
-  <div class="menu-toggle" id="menuToggle">☰</div>
+<nav class="navbar">
+    <div class="logo">
+        <h2>TRAIL</h2>
+        <img src="Images/White Logo.png" alt="Logo">
+    </div>
 </nav>
 
-<div id="title" class="title-level">
+<!-- TITLE -->
+<div class="title-level">
     <h2>Tell Us About You</h2>
-    <p>Tell Us About Yourself So We Can Recomend Your trails</p>
+    <p>Tell us about yourself so we can recommend your trails</p>
 </div>
 
-<div id="difficulty" class="difficulty-class">
-    <h3>Exprience Level</h3><br>
+<!-- EXPERIENCE -->
+<div class="difficulty-class">
+    <h3>Experience Level</h3>
+
     <div class="options">
+
+        <input type="checkbox" id="beginner" name="level" value="Beginner">
         <label for="beginner">Beginner</label>
-        <input type="checkbox" name="beginner" value="beginner">
-        <label for="Intermediate">Intermediate</label>
-        <input type="checkbox" name="Intermediate" value="Intermediate"> 
-        <label for="Advanced">Advanced</label>
-        <input type="checkbox" name="Advanced" value="Advanced"> 
-        <label for="Expert">Expert</label>
-        <input type="checkbox" name="Expert" value="Expert"> 
+
+        <input type="checkbox" id="intermediate" name="level" value="Intermediate">
+        <label for="intermediate">Intermediate</label>
+
+        <input type="checkbox" id="advanced" name="level" value="Advanced">
+        <label for="advanced">Advanced</label>
+
+        <input type="checkbox" id="expert" name="level" value="Expert">
+        <label for="expert">Expert</label>
+
     </div>
 </div>
-    
+
 </body>
 </html>
