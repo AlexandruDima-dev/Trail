@@ -26,7 +26,7 @@ db.prepare(`
 
 
 //ADVANCED MIDDLEWARE
-const limiter = rateLimit({
+const limiter = erl.rateLimit({
 	windowMs: 15 * 60 * 1000,
 	limit: 100, 
 	standardHeaders: 'draft-8', 
@@ -77,8 +77,8 @@ app.post("/SignUp" , async (req,res) =>{
     const number = /[0-9]/
     const {username , email, password} = req.body
 
-    if(!username, !email, !password){
-        res.status(404).json("We Cannot Find Your Data Please Try Agian!")
+    if(!username || !email || !password){
+         return res.status(404).json("We Cannot Find Your Data Please Try Agian!")
     }
 
     if(username === ""|| username == null){
@@ -103,7 +103,7 @@ app.post("/SignUp" , async (req,res) =>{
     const code = Math.floor(100000 + Math.random()* 900000).toString();
 
     db.prepare(`
-        INSERT INTO users (username, email, password, verfication_token) VALUES (?,?,?,?)
+        INSERT INTO users (username, email, password, verfication_code) VALUES (?,?,?,?)
         `).run(username, email, hashedPassword, code);
 
         req.session.verifyEmail = email;
@@ -162,13 +162,13 @@ app.post("/verify", (req,res)=>{
         return res.status(401).json({message:"We Couldnt Find Your Email, Please try agian"})
     }
 
-    if(user.verifaction_code !== enteredCode){
+    if(user.verfication_code !== enteredCode){
         return res.status(401).json({message:"Wrong Code"})
     }
 
     db.prepare(`
         UPDATE users
-        SET verified = 1, verifaction_code = NULL
+        SET verified = 1, verfication_code = NULL
         WHERE email = ?
         `).run(email)
 
@@ -183,7 +183,7 @@ app.get("/login", async (req, res)=>{
 app.post("/login", async (req,res) =>{
     const{email, password} = req.body
     if(!email || !password){
-        res.status(404).json({message: "We Couldnt Find Your Data Please Try again"})
+        return res.status(404).json({message: "We Couldnt Find Your Data Please Try again"})
     }
     
     const users = db.prepare(`
@@ -191,17 +191,17 @@ app.post("/login", async (req,res) =>{
         
         `).get(email);
 
-    if(!user){
-        res.status(404).json({message:"User Not Found"})
+    if(!users){
+        return res.status(404).json({message:"User Not Found"})
     }
 
-    if(!user.verifed){
+    if(!users.verified){
         res.status(401).json({message:"Verify Your Account First"})
     }
 
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(password, users.password);
     if (!match){
-        res.status(401).json({message:"Wrong Password"})
+        return res.status(401).json({message:"Wrong Password"})
     }
 
     res.redirect("/dashboard")
