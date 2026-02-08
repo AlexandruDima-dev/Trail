@@ -132,6 +132,14 @@
     <p id="message" ></p>
 
 </form>
+
+<script>
+    fetch("/verify")
+    .then(response => response.json())
+    .then(data=>{
+        document.getElementById("message").textContent = data.message
+    })
+</script>
     
 </body>
 </html>

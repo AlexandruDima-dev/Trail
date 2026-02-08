@@ -179,6 +179,14 @@
     })
 </script>
 
+<script>
+    fetch("/SignUp")
+    .then(response => response.json())
+    .then(data=>{
+        document.getElementById("message").textContent = data.message
+    })
+</script>
+
     
 </body>
 </html>
