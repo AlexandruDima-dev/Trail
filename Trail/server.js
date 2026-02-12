@@ -25,6 +25,28 @@ db.prepare(`
     )`).run()
 
 
+db.prepare(
+    `CREATE TABLE IF NOT EXISTS trails(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT,
+    difficulty TEXT NOT NULL,
+    length_km REAL,
+    elevation_gain_m REAL,
+    geom TEXT NOT NULL,
+    country TEXT,
+    region TEXT,
+    environmental_info TEXT,
+    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+`
+).run()
+
+
+
+
+
+
 //ADVANCED MIDDLEWARE
 const limiter = erl.rateLimit({
 	windowMs: 15 * 60 * 1000,
@@ -207,6 +229,26 @@ app.post("/login", async (req,res) =>{
     res.redirect("/dashboard")
 
 })
+
+// API endpoint to get all trails
+
+app.get("/api/trails", (req, res) => {
+    try {
+        const trails = db.prepare(`
+            SELECT id, name, description, difficulty, length_km, elevation_gain_m, country, region, geom 
+            FROM trails
+        `).all();
+        res.json(trails);
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({ message: "Failed to fetch trails" });
+    }
+});
+
+
+
+
+
 
 
 app.listen(PORT, ()=>{
