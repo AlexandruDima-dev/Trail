@@ -64,6 +64,13 @@ body { margin: 0; display: flex; height: 100vh; font-family: sans-serif; }
     color: #ffffff;
     border-radius: 20px;
     border: none;
+
+    transition: all ease 0.3s;
+}
+
+#sidebar button:hover{
+    background-color: #194300;
+    transform: translateY(-10px);
 }
 #sidebar ul { list-style: none; padding: 0; margin-top: 10px; }
 #sidebar li { margin-bottom: 5px; cursor: pointer; color: #0074d9; }
@@ -75,6 +82,8 @@ body { margin: 0; display: flex; height: 100vh; font-family: sans-serif; }
     align-items: center;
     background-color:#292929;
     color: #ffffff;
+
+    z-index: 100000;
 }
 
 .sidebar-class h3{
