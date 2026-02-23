@@ -120,6 +120,13 @@ body{
   text-align: center;
 }
 
+.inputDOM{
+  border-radius: 6px;
+  outline: none;
+  border: none;
+  height: 20px;
+}
+
 
 
 
@@ -145,7 +152,7 @@ body{
 <!-- MAIN  BODY-->
 
 
-<form action="/contact" method="post" class="contact-class">
+<form action="/contact" method="post" class="contact-class" id="form-contact">
   <h2>Contact Us</h2><br>
   <label>Full Name</label><br>
   <input name="fullname" type="text" placeholder="Please Input Your Full Name"><br>
@@ -194,8 +201,37 @@ body{
   }
 
 
-  
+</script>
 
+
+<script>
+const form = document.getElementById("form-contact");
+const responseDiv = document.getElementById("message");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault(); // stop page reload
+
+  // Collect the form data
+  const data = {
+    fullname: form.fullname.value,
+    email: form.email.value,
+    reasons: form.reasons.value,
+    message: form.message.value
+  };
+
+  // Send data to your backend
+  const res = await fetch("/contact", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  // Get the JSON your backend sent
+  const json = await res.json();
+
+  // Display it in a <p>
+  responseDiv.innerHTML = `<p>${json.message}</p>`;
+});
 </script>
 
 

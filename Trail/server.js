@@ -43,6 +43,20 @@ db.prepare(
 ).run()
 
 
+db.prepare(
+    `
+    CREATE TABLE IF NOT EXISTS contact_data(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fullname TEXT NOT NULL,
+    email TEXT NOT NULL,
+    reasons TEXT NOT NULL,
+    message TEXT NOT NULL
+
+    )
+    `
+).run()
+
+
 
 
 
@@ -228,6 +242,45 @@ app.post("/login", async (req,res) =>{
 
     res.redirect("/dashboard")
 
+})
+
+
+// CONTACT
+
+app.get("/contact", (req,res)=>{
+    res.sendFile(path.join(__dirname, "public", "contact.html"))
+})
+
+app.post("/contact", async (req,res)=>{
+    const {fullname, email, reasons, message } = req.body
+    if(!fullname || !email || !reasons || !message){
+        return res.status(404).json({message:"Your Data Has Not Been Found, Please Try Agian"})
+    }
+
+    try{
+        db.prepare("INSERT INTO contact_data(fullname, email, reasons, message) VALUES (?,?,?,?)").run(fullname, email, reasons, message)
+        console.log("Contact Data has been enetred into the data base")
+    }catch(e){
+        return res.status(500).json({message:"Data Hasnt Been Inputed Into The Data Base Please Try Again"})
+    }
+
+
+     await transporter.sendMail({
+        from:email,
+        to:"alexandrucoding08@gmail.com",
+        subject:"Contact From",
+        text:`
+
+        From:${fullname}
+        Email:${email}
+
+        Reason${reasons}
+        Message:${message}
+        
+        `
+    })
+
+    res.status(200).json({message:"Conatct Form Has Been Sent Sucsesfully!"})
 })
 
 // API endpoint to get all trails
