@@ -72,4 +72,23 @@ def import_data(
 def ai_content():
     
     API_KEY = "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"
+    response = requests.post(
+    "https://openrouter.ai/api/v1/chat/completions",
+    headers={
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model": "mistralai/mistral-7b-instruct:free",
+        "messages": [
+            {"role": "user", "content": "Explain Python like I'm 10 years old"}
+        ]
+    }
+    )
 
+    data = response.json()
+
+    print(data)
+
+
+ai_content()
