@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login To Trail</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Images/Normal Logo.png">
+    <style>
+
+        body {
+        display: flex;
+        flex-direction: column;
+        background-image: url("Images/login.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        }
+
+        .navbar {
+        width: 100%;
+        padding: 20px 40px;
+        position: fixed;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0,0,0,0.5);
+        z-index: 10;
+        }
+
+        .navbar .logo h2 {
+        color: #fff;
+        margin-right: 10px;
+        }
+
+        .navbar .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 20px;
+        }
+
+        .navbar .nav-links li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        }
+
+        .menu-toggle {
+        display: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #fff;
+        }
+
+        .login{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-self: center;
+
+            background-color: #2e7e0081;
+            backdrop-filter: blur(20px);
+            margin-top: 200px;
+
+            max-width: 400px;
+            min-width: 300px;
+
+            color: #fff;
+            padding: 60px;
+            border-radius: 14px;
+            box-shadow: 0 10px 14px #000000;
+            outline:2px solid #008b07;
+        }
+
+        .login input{
+            border-radius: 6px;
+            outline: none;
+            border: none;
+
+            height: 20px;
+        }
+
+        .login button{
+            padding: 5px;
+            background-color: #43b600;
+            color: #fff;
+            border-radius: 14px;
+            border: none;
+            box-shadow: 0 5px 10px #000000;
+
+            transition: all ease 0.3s;
+
+        }
+
+        .login button:hover{
+            background-color: #ffffff;
+            color: #000000;
+            
+
+        }
+
+        .login p{
+            color: #ffffff;
+            text-align: center;
+        }
+
+        
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+  <div class="logo">
+      <h2>TRAIL</h2>
+      <img alt="Logo" src="Images/White Logo.png">
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="/login">Login</a></li>
+    <li><a href="/SignUp">Sign Up</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+
+  <div class="menu-toggle" id="menuToggle">☰</div>
+</nav>
+
+<!-- MAIN BODY -->
+
+<form id="form" action="/SignUp" method="post" class="login">
+    <h2>Welcome to Trail</h2><br>
+    <label>Username</label><br>
+    <input id="username" type="text" name="username" ><br>
+    <label>Email</label><br>
+    <input id="email" type="email" name="email" ><br>
+    <label>Password</label><br>
+    <input id="pass" type="password" name="password" ><br><br>
+    <button id="submit">Submit</button><br>
+    <p id="message" ></p>
+
+</form>
+
+<script>
+    const user = document.getElementById("username")
+    const password = document.getElementById("pass")
+    const email = document.getElementById("email")
+    const messages = document.getElementById("message")
+    const form = document.getElementById("form")
+
+    form.addEventListener("submit", (e)=>{
+        let message = []
+        const specialChar = /[!@#$%^&*(),.?":{}|<>]/
+        const letter = /[A-Za-z]/
+        const number = /[0-9]/
+
+        if(user.value === ""|| user.value == null){
+            message.push("Please Enter Your Username")
+        }else if(email.value === ""|| email.value == null){
+            message.push("Please Enter Your Email")
+        } else if(password.value === "" || password.value == null){
+            message.push("Please Enter Your Password")
+        } else if (password.value.length < 6){
+            message.push("Your Password Isnt Long Enough")
+        } else if(!email.value.includes("@") || !email.value.includes(".com")){
+            message.push("Enter a Vaild Email")
+        } else if(!specialChar.test(password.value)){
+            message.push("Please Include A Special Charater")
+        } else if(!letter.test(password.value)){
+            message.push("Please Include Letters In The Password")
+        } else if (!number.test(password.value)){
+            message.push("Please Include A Number")
+        }
+        if(message.length > 0){
+            e.preventDefault()
+            messages.innerText = message.join(",")
+        }
+
+    })
+</script>
+
+<script>
+    fetch("/SignUp")
+    .then(response => response.json())
+    .then(data=>{
+        document.getElementById("message").textContent = data.message
+    })
+</script>
+
+    
+</body>
+</html>

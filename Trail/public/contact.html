@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Trail</title>
+    <link rel="icon" href="Images/Normal Logo.png">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .navbar {
+  width: 100%;
+  padding: 20px 40px;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+.navbar .logo h2 {
+  color: #fff;
+  margin-right: 10px;
+}
+
+.navbar .nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.navbar .nav-links li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  background-image: url("Images/login.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.contact-class{
+
+    display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+
+  background-color: #2e7e009f;
+  backdrop-filter: blur(5px);
+  margin-top: 200px;
+
+  max-width: 1000px;
+  min-width: 400px;
+
+  color: #fff;
+  padding: 60px;
+  border-radius: 14px;
+  box-shadow: 0 10px 14px #000000;
+  outline:2px solid #008b07;
+}
+
+
+.contact-class input{
+
+  border-radius: 6px;
+  outline: none;
+  border: none;
+  height: 20px;
+}
+
+.contact-class button{
+  padding: 5px;
+  background-color: #43b600;
+  color: #fff;
+  border-radius: 14px;
+  border: none;
+  box-shadow: 0 5px 10px #000000;
+
+  transition: all ease 0.3s;
+}
+
+.contact-class button:hover{
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.contact-class select{
+  border-radius: 6px;
+  width: 300px;
+  height: 20px;
+  border: none;
+  outline: none;
+}
+.contact-class option{
+  border-radius: 6px;
+}
+
+.contact-class textarea{
+  border-radius: 6px;
+  height: 100px;
+}
+
+.contact-class p{
+  text-align: center;
+}
+
+.inputDOM{
+  border-radius: 6px;
+  outline: none;
+  border: none;
+  height: 20px;
+}
+
+
+
+
+    </style>
+
+</head>
+<body>
+    <nav class="navbar">
+  <div class="logo">
+      <h2>TRAIL</h2>
+      <img alt="Logo" src="Images/White Logo.png">
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="/login">Login</a></li>
+    <li><a href="/SignUp">Sign Up</a></li>
+  </ul>
+
+  <div class="menu-toggle" id="menuToggle">☰</div>
+</nav>
+
+
+<!-- MAIN  BODY-->
+
+
+<form action="/contact" method="post" class="contact-class" id="form-contact">
+  <h2>Contact Us</h2><br>
+  <label>Full Name</label><br>
+  <input name="fullname" type="text" placeholder="Please Input Your Full Name"><br>
+  <label>Email</label><br>
+  <input name="email" type="email" placeholder="example@gmail.com"><br>
+  <label>Reason</label><br>
+
+  <div id="dropdown">
+
+
+  <select name="reasons" id="dropdown-main">
+    <option value="null">Select A Reason</option>
+    <option value="Bug-or-lag">Bugs or Lag</option>
+    <option value="suggesttrail">Suggest New Trails</option>
+    <option value="review">Leave a Review for Trail</option>
+    <option value="business">Business reasons</option>
+    <option value="General Question"> General Question</option>
+    <option value = "other" id="other">Other</option>
+  </select>
+
+
+
+  </div>
+<br>
+  <label>Message</label><br>
+  <textarea name="message"></textarea><br><r></r>
+  <button id="submit">Sumbit</button>
+  <br><br>
+  <p id="message"></p>
+</form>
+
+
+<script>
+  const message = document.getElementById("message")
+  const dropdown = document.getElementById("dropdown-main")
+  const body = document.body
+  const dropdownCon = document.getElementById("dropdown")
+  const button= document.getElementById("submit");
+
+  button.onclick = function(e){
+
+    if(dropdown.value == "null" || dropdown.value == "" || dropdown.value === null){
+      e.preventDefault()
+      message.textContent = "Please Select A Reason"
+    }
+  }
+
+
+</script>
+
+
+<script>
+const form = document.getElementById("form-contact");
+const responseDiv = document.getElementById("message");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault(); // stop page reload
+
+  // Collect the form data
+  const data = {
+    fullname: form.fullname.value,
+    email: form.email.value,
+    reasons: form.reasons.value,
+    message: form.message.value
+  };
+
+  // Send data to your backend
+  const res = await fetch("/contact", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  // Get the JSON your backend sent
+  const json = await res.json();
+
+  // Display it in a <p>
+  responseDiv.innerHTML = `<p>${json.message}</p>`;
+});
+</script>
+
+
+
+
+
+
+    
+</body>
+</html>

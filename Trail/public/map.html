@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Trail Map</title>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css" rel="stylesheet">
+<link rel="icon" href="Images/Normal Logo.png">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+/* Sidebar */
+#sidebar {
+    width: 320px;
+    padding: 20px;
+    background: #111;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#sidebar h2 {
+    color: #00ff88;
+}
+
+#sidebar input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    margin-bottom: 10px;
+}
+
+#sidebar button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    background: #00ff88;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Map */
+#map {
+    flex: 1;
+    position: relative;
+}
+
+/* Popup Modern Card */
+.mapboxgl-popup-content {
+    padding: 0 !important;
+    border-radius: 18px !important;
+    overflow: hidden;
+}
+
+.trail-card {
+    width: 280px;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.trail-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.trail-card-content {
+    padding: 15px;
+}
+
+.trail-card h3 {
+    margin: 0 0 8px 0;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.info-row {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.description {
+    font-size: 13px;
+    margin-top: 8px;
+    color: #555;
+}
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+    <h2>Find a Trail</h2>
+    <input type="text" id="place-search" placeholder="Search a place...">
+    <button id="search-btn">Search</button>
+</div>
+
+<div id="map"></div>
+
+<script>
+mapboxgl.accessToken = "pk.eyJ1IjoiYWxleGFuZHJ1NjciLCJhIjoiY21sanpsdmxwMDUzazNnc2Rjd3Uza3dwYiJ9.pzrXdq5_DhfkrYdJXOt5uQ";
+
+const map = new mapboxgl.Map({
+    container: "map",
+    style: "mapbox://styles/mapbox/outdoors-v12",
+    center: [0, 20],
+    zoom: 2
+});
+
+map.addControl(new mapboxgl.NavigationControl());
+
+let trailMarkers = [];
+let activeTrail = null;
+
+/* Clear Trails */
+function clearTrails() {
+    trailMarkers.forEach(m => m.remove());
+    trailMarkers = [];
+
+    if (activeTrail) {
+        if (map.getLayer("active-trail")) map.removeLayer("active-trail");
+        if (map.getSource("active-trail")) map.removeSource("active-trail");
+        activeTrail = null;
+    }
+}
+
+/* Distance (Haversine) */
+function calculateDistance(coords) {
+    let total = 0;
+    const R = 6371;
+    for (let i = 1; i < coords.length; i++) {
+        const [lon1, lat1] = coords[i - 1];
+        const [lon2, lat2] = coords[i];
+
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+
+        const a =
+            Math.sin(dLat / 2) ** 2 +
+            Math.cos(lat1 * Math.PI / 180) *
+            Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) ** 2;
+
+        total += 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+    return total;
+}
+
+function classifyDifficulty(distance) {
+    if (distance < 2) return "Beginner";
+    if (distance < 7) return "Intermediate";
+    return "Advanced";
+}
+
+function estimateTime(distance) {
+    return (distance / 4).toFixed(1);
+}
+
+/* Fetch Trails from Overpass */
+async function fetchTrails(lat, lng) {
+    const radius = 30000;
+
+    const query = `
+    [out:json][timeout:40];
+    (
+      way["highway"~"path|footway|track|bridleway"](around:${radius},${lat},${lng});
+    );
+    out geom;
+    `;
+
+    const response = await fetch(
+        "https://overpass-api.de/api/interpreter",
+        { method: "POST", body: query }
+    );
+
+    const data = await response.json();
+    return data.elements;
+}
+
+/* Draw Markers */
+function drawTrails(elements) {
+    elements.slice(0, 80).forEach(el => {
+        if (!el.geometry) return;
+
+        const coords = el.geometry.map(g => [g.lon, g.lat]);
+        const distance = calculateDistance(coords);
+        if (distance < 0.5) return;
+
+        const difficulty = classifyDifficulty(distance);
+        const time = estimateTime(distance);
+
+        const midpoint = coords[Math.floor(coords.length / 2)];
+
+        let color =
+            difficulty === "Beginner" ? "#00c853" :
+            difficulty === "Intermediate" ? "#ffb300" :
+            "#d50000";
+
+        const marker = new mapboxgl.Marker({ color })
+            .setLngLat(midpoint)
+            .addTo(map);
+
+        marker.getElement().addEventListener("click", () => {
+
+            if (activeTrail) {
+                if (map.getLayer("active-trail")) map.removeLayer("active-trail");
+                if (map.getSource("active-trail")) map.removeSource("active-trail");
+            }
+
+            map.addSource("active-trail", {
+                type: "geojson",
+                data: {
+                    type: "Feature",
+                    geometry: {
+                        type: "LineString",
+                        coordinates: coords
+                    }
+                }
+            });
+
+            map.addLayer({
+                id: "active-trail",
+                type: "line",
+                source: "active-trail",
+                paint: {
+                    "line-color": color,
+                    "line-width": 6
+                }
+            });
+
+            let elevationGain = Math.floor(distance * 120 + Math.random() * 200);
+
+            const popupHTML = `
+                <div class="trail-card">
+                    <img src="https://source.unsplash.com/400x200/?trail,hiking,nature">
+                    <div class="trail-card-content">
+                        <h3>Scenic Trail</h3>
+                        <span class="badge" style="background:${color}">
+                            ${difficulty}
+                        </span>
+                        <div class="info-row">📏 ${distance.toFixed(2)} km</div>
+                        <div class="info-row">⏱ ${time} hrs</div>
+                        <div class="info-row">⛰ ${elevationGain} m elevation</div>
+                        <div class="description">
+                            A scenic hiking trail featuring natural landscapes,
+                            peaceful surroundings and rewarding views.
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            new mapboxgl.Popup({ offset: 25 })
+                .setLngLat(midpoint)
+                .setHTML(popupHTML)
+                .addTo(map);
+
+            activeTrail = true;
+        });
+
+        trailMarkers.push(marker);
+    });
+}
+
+/* Search */
+document.getElementById("search-btn").addEventListener("click", async () => {
+
+    const place = document.getElementById("place-search").value;
+    if (!place) return;
+
+    const geoResponse = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(place)}.json?access_token=${mapboxgl.accessToken}`
+    );
+
+    const geoData = await geoResponse.json();
+
+    if (!geoData.features.length) {
+        alert("Place not found");
+        return;
+    }
+
+    const [lng, lat] = geoData.features[0].center;
+
+    map.flyTo({ center: [lng, lat], zoom: 13 });
+
+    clearTrails();
+
+    const trails = await fetchTrails(lat, lng);
+    drawTrails(trails);
+});
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- // 👇 PASTE YOUR TOKEN HERE
+mapboxgl.accessToken = "pk.eyJ1IjoiYWxleGFuZHJ1NjciLCJhIjoiY21sanpsdmxwMDUzazNnc2Rjd3Uza3dwYiJ9.pzrXdq5_DhfkrYdJXOt5uQ"; -->
+
+

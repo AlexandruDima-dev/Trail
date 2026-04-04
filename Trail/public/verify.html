@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login To Trail</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Images/Normal Logo.png">
+    <style>
+
+        body {
+        display: flex;
+        flex-direction: column;
+        background-image: url("Images/login.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 100vh;
+        }
+
+        .navbar {
+        width: 100%;
+        padding: 20px 40px;
+        position: fixed;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0,0,0,0.5);
+        z-index: 10;
+        }
+
+        .navbar .logo h2 {
+        color: #fff;
+        margin-right: 10px;
+        }
+
+        .navbar .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 20px;
+        }
+
+        .navbar .nav-links li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        }
+
+        .menu-toggle {
+        display: none;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #fff;
+        }
+
+        .login{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-self: center;
+
+            background-color: #2e7e00;
+            backdrop-filter: blur(5px);
+            margin-top: 200px;
+
+            max-width: 400px;
+            min-width: 300px;
+
+            color: #fff;
+            padding: 60px;
+            border-radius: 14px;
+            box-shadow: 0 10px 14px #000000;
+            outline:2px solid #008b07;
+        }
+
+        .login input{
+            border-radius: 6px;
+            outline: none;
+            border: none;
+
+            height: 20px;
+        }
+
+        .login button{
+            padding: 5px;
+            background-color: #43b600;
+            color: #fff;
+            border-radius: 14px;
+            border: none;
+            box-shadow: 0 5px 10px #000000;
+
+            transition: all ease 0.3s;
+
+        }
+
+        .login button:hover{
+            background-color: #ffffff;
+            color: #000000;
+            
+
+        }
+
+        .login p{
+            color: #ffffff;
+            text-align: center;
+        }
+
+        
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+  <div class="logo">
+      <h2>TRAIL</h2>
+      <img alt="Logo" src="Images/White Logo.png">
+  </div>
+
+
+  <div class="menu-toggle" id="menuToggle">☰</div>
+</nav>
+
+<!-- MAIN BODY -->
+
+<form id="form" action="/verify" method="post" class="login">
+    <h2>Verify Your Acount</h2><br>
+    <label>Email</label><br>
+    <input id="code" type="text" name="code"><br><br>
+    <p>We have sent a verfication code to <p id="email"></p></p><br>
+    <button id="submit">Submit</button><br>
+    <p id="message" ></p>
+
+</form>
+
+<script>
+    fetch("/verify")
+    .then(response => response.json())
+    .then(data=>{
+        document.getElementById("message").textContent = data.message
+    })
+</script>
+    
+</body>
+</html>
