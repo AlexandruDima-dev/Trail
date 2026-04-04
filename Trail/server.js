@@ -101,6 +101,11 @@ app.use(session({
 }))
 
 
+//AUTHENTICATION
+// ==========================================================
+//===========================================================
+
+
 // Sign Up
 
 app.get("/SignUp" ,async (req,res)=>{
@@ -221,6 +226,10 @@ app.post("/login", async (req,res) =>{
     if(!email || !password){
         return res.status(404).json({message: "We Couldnt Find Your Data Please Try again"})
     }
+
+    if(email == "alexandruadmin05@gmail.com"){
+        
+    }
     
     const users = db.prepare(`
         SELECT * FROM users WHERE email = ?
@@ -245,7 +254,11 @@ app.post("/login", async (req,res) =>{
 })
 
 
+
+
+
 // CONTACT
+//============================================================================================
 
 app.get("/contact", (req,res)=>{
     res.sendFile(path.join(__dirname, "public", "contact.html"))
@@ -283,7 +296,10 @@ app.post("/contact", async (req,res)=>{
     res.status(200).json({message:"Conatct Form Has Been Sent Sucsesfully!"})
 })
 
+
+
 // API endpoint to get all trails
+//======================================================================================================
 
 app.get("/api/trails", (req, res) => {
     try {
@@ -297,6 +313,15 @@ app.get("/api/trails", (req, res) => {
         res.status(500).json({ message: "Failed to fetch trails" });
     }
 });
+
+
+// Dashboard 
+//========================================================================================================
+app.get("/dashboard", (req,res)=>{
+    res.sendFile(path.join(__dirname, "public", "dashboard.html"))
+})
+
+
 
 
 
