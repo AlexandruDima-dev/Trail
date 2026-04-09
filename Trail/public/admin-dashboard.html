@@ -1,67 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trail Admin</title>
-    <link rel="stylesheet" href="/public/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trail Admin</title>
 
-    <style>
-        body{
+<style>
+    body{
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        }
-        /* NAV BAR OF ADMIN DASHBOARD */
-        nav{
-            width: 300px;
-            display: flex;
-            flex-direction: column;
-            background-color:#556b2f ;
-            padding: 40px;
-            color: aliceblue;
-            height: 100%;
+    /* SIDEBAR */
+    .sidebar{
+        width: 250px;
+        height: 100vh;
+        background: #003b0f;
+        color: white;
 
-        }
+        display: flex;
+        flex-direction: column;
 
-        nav button img{
-            margin-right: 10px;
-        }
+        padding: 25px 15px;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
 
-        nav button{
-            color: aliceblue;
-            font-weight: bolder;
-            border: none;
-            display: flex;
-            align-items: center;
-            background-color: #556b2f;
-            width: 200px;
-            padding: 20px;
-            border-radius: 14px;
+    /* LOGO */
+    .logo h2{
+        margin: 0;
+        font-size: 22px;
+    }
 
-            transition: all ease 0.3s;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            font-size: 20px;
-        }
+    .logo p{
+        margin: 5px 0 25px;
+        font-size: 13px;
+        opacity: 0.7;
+    }
 
-        nav button:hover{
-            background-color: #788563;
-        }
-    </style>
+    /* NAV LINKS */
+    .nav-links{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-links li{
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        padding: 12px;
+        margin-bottom: 10px;
+
+        border-radius: 10px;
+        cursor: pointer;
+
+        transition: all 0.25s ease;
+    }
+
+    /* ICONS */
+    .nav-links img{
+        width: 20px;
+        height: 20px;
+    }
+
+    /* HOVER */
+    .nav-links li:hover{
+        background: #556b2f;
+        transform: translateX(5px);
+    }
+
+    /* ACTIVE */
+    .nav-links li.active{
+        background: #556b2f;
+    }
+
+</style>
 </head>
+
 <body>
 
-<nav>
-    <h2>Trail Admin</h2>
-    <p>Management Dashboard</p><br><br>
+<nav class="sidebar">
+    <div class="logo">
+        <h2>Trail</h2>
+        <p>Admin Panel</p>
+    </div>
 
-    <button><img alt="Dashboard Icon" src="/public/Icons/dashboard_icon.png" height="30px">Dashboard</button><br>
-    <button><img alt="Users Button" src="/public/Icons/profile_icon.png" height="30px">Users</button><br>
-    <button><img alt="Reports Button" src="/public/Icons/warning_icon.png" height="30px">Reports</button><br>
-    <button><img alt="Settings Button" src="/public/Icons/settings_icon.png" height="30px">Settings</button>
+    <ul class="nav-links">
+        <li class="active">
+            <img src="Icons/dashboard_icon.png">
+            <span>Dashboard</span>
+        </li>
+
+        <li>
+            <img src="Icons/profile_icon.png">
+            <span>Users</span>
+        </li>
+
+        <li>
+            <img src="Icons/warning_icon.png">
+            <span>Reports</span>
+        </li>
+
+        <li>
+            <img src="Icons/settings_icon.png">
+            <span>Settings</span>
+        </li>
+    </ul>
 </nav>
 
+<div id="main" class="main-container">
 
-<div class="dashboard-container"></div>
-    
+    <h2>Dashboard</h2>
+</div>
+
 </body>
 </html>
