@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trail Admin</title>
+    <link rel="stylesheet" href="/public/style.css">
+
+    <style>
+        body{
+
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        /* NAV BAR OF ADMIN DASHBOARD */
+        nav{
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            background-color:#556b2f ;
+            padding: 40px;
+            color: aliceblue;
+            height: 100%;
+
+        }
+
+        nav button img{
+            margin-right: 10px;
+        }
+
+        nav button{
+            color: aliceblue;
+            font-weight: bolder;
+            border: none;
+            display: flex;
+            align-items: center;
+            background-color: #556b2f;
+            width: 200px;
+            padding: 20px;
+            border-radius: 14px;
+
+            transition: all ease 0.3s;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 20px;
+        }
+
+        nav button:hover{
+            background-color: #788563;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h2>Trail Admin</h2>
+    <p>Management Dashboard</p><br><br>
+
+    <button><img alt="Dashboard Icon" src="/public/Icons/dashboard_icon.png" height="30px">Dashboard</button><br>
+    <button><img alt="Users Button" src="/public/Icons/profile_icon.png" height="30px">Users</button><br>
+    <button><img alt="Reports Button" src="/public/Icons/warning_icon.png" height="30px">Reports</button><br>
+    <button><img alt="Settings Button" src="/public/Icons/settings_icon.png" height="30px">Settings</button>
+</nav>
+
+
+<div class="dashboard-container"></div>
+    
+</body>
+</html>
