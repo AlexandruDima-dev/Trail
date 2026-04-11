@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Trail Admin - Users</title>
+
+<style>
+:root{
+    --bg:#0f0f0f;
+    --panel:#4e4e4e8a;
+    --accent:#556b2f;
+    --danger:#8b2f2f;
+    --text:aliceblue;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    background:url("Images/admin-pannel.jpg") center/cover no-repeat;
+    color:var(--text);
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    background:#003b0f;
+    height:100vh;
+    position:fixed;
+    top:0;
+    left:0;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    transition:0.3s;
+}
+
+.logo h2{margin-bottom:5px;}
+.logo p{opacity:.7;font-size:13px;margin-bottom:20px;}
+
+.nav-links{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.nav-links li{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.nav-links li:hover,
+.nav-links li.active{
+    background:var(--accent);
+    transform:translateX(4px);
+}
+
+.nav-links img{
+    width:20px;
+    height:20px;
+}
+
+/* MAIN */
+.main-container{
+    margin-left:260px;
+    padding:clamp(15px,3vw,40px);
+    width:100%;
+}
+
+.title{
+    font-size:clamp(24px,4vw,40px);
+    font-weight:700;
+}
+
+.subtitle{
+    color:#cfcfcf;
+    margin-bottom:20px;
+}
+
+/* SEARCH */
+.search-bar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    background:var(--panel);
+    backdrop-filter:blur(12px);
+    padding:15px;
+    border-radius:14px;
+    outline:2px solid #666;
+    margin-bottom:20px;
+}
+
+.search-bar input{
+    flex:1;
+    min-width:200px;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:#1f1f1f;
+    color:white;
+}
+
+.search-bar button{
+    background:var(--accent);
+    border:none;
+    padding:10px 15px;
+    border-radius:10px;
+    color:white;
+    cursor:pointer;
+}
+
+/* TABLE */
+.table-card{
+    background:var(--panel);
+    backdrop-filter:blur(12px);
+    border-radius:16px;
+    padding:20px;
+    outline:2px solid #666;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:650px;
+}
+
+th,td{
+    padding:12px;
+    text-align:left;
+}
+
+th{
+    color:#ddd;
+    border-bottom:1px solid #777;
+}
+
+td{
+    border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+/* BUTTONS */
+.action-btn{
+    background:var(--accent);
+    border:none;
+    padding:6px 10px;
+    border-radius:8px;
+    color:white;
+    cursor:pointer;
+}
+
+.delete{
+    background:var(--danger);
+}
+
+/* HAMBURGER */
+.menu-btn{
+    display:none;
+    position:fixed;
+    top:15px;
+    left:15px;
+    background:var(--accent);
+    border:none;
+    padding:10px;
+    border-radius:8px;
+    z-index:1000;
+    cursor:pointer;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+    .menu-btn{
+        display:block;
+    }
+
+    .sidebar{
+        transform:translateX(-100%);
+        width:240px;
+        position:fixed;
+        z-index:999;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main-container{
+        margin-left:0;
+        margin-top:60px;
+    }
+
+    table{
+        min-width:100%;
+    }
+}
+
+/* SMALL MOBILE → TABLE BECOMES CARDS */
+@media(max-width:600px){
+
+    table,thead,tbody,tr,td,th{
+        display:block;
+        width:100%;
+    }
+
+    thead{
+        display:none;
+    }
+
+    tr{
+        background:rgba(0,0,0,0.3);
+        margin-bottom:15px;
+        border-radius:12px;
+        padding:10px;
+    }
+
+    td{
+        border:none;
+        display:flex;
+        justify-content:space-between;
+        padding:8px 5px;
+    }
+
+    td::before{
+        content:attr(data-label);
+        font-weight:bold;
+        color:#ccc;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MENU BUTTON -->
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+    <div class="logo">
+        <h2>Trail</h2>
+        <p>Admin Panel</p>
+    </div>
+
+    <ul class="nav-links">
+        <li><img src="Icons/dashboard_icon.png"><span>Dashboard</span></li>
+        <li class="active"><img src="Icons/profile_icon.png"><span>Users</span></li>
+        <li><img src="Icons/warning_icon.png"><span>Reports</span></li>
+        <li><img src="Icons/settings_icon.png"><span>Settings</span></li>
+    </ul>
+</nav>
+
+<!-- MAIN -->
+<div class="main-container">
+
+    <h2 class="title">Users</h2>
+    <p class="subtitle">Manage platform users (JSON backend ready)</p>
+
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Search users...">
+        <button onclick="loadUsers()">Refresh</button>
+    </div>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Date Joined</th>
+                    <th>Last Active</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="usersTable"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+const API_URL = "/api/users";
+
+/* SIDEBAR TOGGLE */
+function toggleMenu(){
+    document.getElementById("sidebar").classList.toggle("open");
+}
+
+/* LOAD USERS */
+async function loadUsers(){
+    try {
+        const res = await fetch(API_URL);
+        const users = await res.json();
+        renderUsers(users);
+    } catch {
+        renderUsers([
+            {
+                username:"demo_user",
+                email:"demo@example.com",
+                dateJoined:"2025-01-01",
+                lastActive:"1 hour ago"
+            }
+        ]);
+    }
+}
+
+/* RENDER */
+function renderUsers(users){
+    const table = document.getElementById("usersTable");
+    table.innerHTML = "";
+
+    users.forEach(user=>{
+        table.innerHTML += `
+            <tr>
+                <td data-label="Username">${user.username}</td>
+                <td data-label="Email">${user.email}</td>
+                <td data-label="Date Joined">${user.dateJoined}</td>
+                <td data-label="Last Active">${user.lastActive}</td>
+                <td data-label="Actions">
+                    <button class="action-btn">Edit</button>
+                    <button class="action-btn delete">Delete</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+/* SEARCH */
+document.getElementById("search").addEventListener("input", async (e)=>{
+    const value = e.target.value.toLowerCase();
+
+    const res = await fetch(API_URL);
+    const users = await res.json();
+
+    const filtered = users.filter(u =>
+        u.username.toLowerCase().includes(value) ||
+        u.email.toLowerCase().includes(value)
+    );
+
+    renderUsers(filtered);
+});
+
+loadUsers();
+</script>
+
+</body>
+</html>
