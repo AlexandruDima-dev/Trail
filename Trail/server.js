@@ -184,6 +184,10 @@ app.post("/signup", async (req, res) => {
 
 // Verify Email
 
+app.get("/verify", (req,res)=>{
+    res.sendFile(path.join(__dirname, "public", "verify.html"))
+})
+
 app.post("/verify", (req, res) => {
     const enteredCode = req.body.code;
     const email = req.session.verifyEmail;
@@ -333,13 +337,29 @@ app.get("/api/trails", (req, res) => {
 //================================
 
 app.get("/admin/dashboard", (req,res)=>{
-    app.sendFile(path.join(__dirname,"public", "admin-dashboard.html"))
+    res.sendFile(path.join(__dirname,"public", "admin-dashboard.html"))
 })
 
 app.post("/admin/dashboard", (req,res)=>{
     const wassap = "hey"
     res.json(wassap)
 })
+
+
+//Users page Dashboard
+
+app.get("/admin/users", (req,res)=>{
+    res.sendFile(path.join(__dirname, "public", "admin-users.html"))
+})
+
+
+//Trail  Management
+
+app.get("/admin/trails", (req,res)=>{
+    res.sendFile(path.join(__dirname, "public", "admin-trail-managment.html"))
+})
+
+
 
 
 

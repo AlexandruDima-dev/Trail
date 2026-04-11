@@ -24,7 +24,7 @@
 body{
     min-height:100vh;
     display:flex;
-    background:url("Images/admin-pannel.jpg") center/cover no-repeat;
+    background:url("/Images/admin-pannel.jpg") center/cover no-repeat;
     color:var(--text);
 }
 
@@ -120,8 +120,14 @@ body{
     border-radius:10px;
     color:white;
     cursor:pointer;
+
+    transition: all ease 0.3s;
 }
 
+
+.search-bar button:hover{
+    background-color: #003b0f;
+}
 /* TABLE */
 .table-card{
     background:var(--panel);
@@ -256,10 +262,11 @@ td{
     </div>
 
     <ul class="nav-links">
-        <li><img src="Icons/dashboard_icon.png"><span>Dashboard</span></li>
-        <li class="active"><img src="Icons/profile_icon.png"><span>Users</span></li>
-        <li><img src="Icons/warning_icon.png"><span>Reports</span></li>
-        <li><img src="Icons/settings_icon.png"><span>Settings</span></li>
+        <li onclick="getToDash()"><img src="/Icons/dashboard_icon.png"><span>Dashboard</span></li>
+        <li class="active"><img src="/Icons/profile_icon.png"><span>Users</span></li>
+        <li onclick="getToTrails()"><img src="/Icons/location_icon.png"><span>Trails</span></li>
+        <li><img src="/Icons/warning_icon.png"><span>Reports</span></li>
+        <li><img src="/Icons/settings_icon.png"><span>Settings</span></li>
     </ul>
 </nav>
 
@@ -290,6 +297,18 @@ td{
     </div>
 
 </div>
+
+<script>
+    function getToDash(){
+        window.location.href = "/admin/dashboard"
+    }
+</script>
+
+<script>
+    function getToTrails(){
+        window.location.href ="/admin/trails"
+    }
+</script>
 
 <script>
 const API_URL = "/api/users";

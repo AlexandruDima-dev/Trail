@@ -13,7 +13,7 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: aliceblue;
 
-        background-image: url("Images/admin-pannel.jpg");
+        background-image: url("/Images/admin-pannel.jpg");
         background-position: center;
         background-repeat: no-repeat;
     }
@@ -235,22 +235,28 @@
 
     <ul class="nav-links">
         <li class="active">
-            <img src="Icons/dashboard_icon.png">
+            <img src="/Icons/dashboard_icon.png">
             <span>Dashboard</span>
         </li>
 
-        <li>
-            <img src="Icons/profile_icon.png">
+        <li onclick="goToUsers()">
+            <img src="/Icons/profile_icon.png">
             <span>Users</span>
         </li>
 
+        <li onclick="goToTrail()">
+            <img src="/Icons/location_icon.png">
+            <span>Trails</span>
+
+        </li>
+
         <li>
-            <img src="Icons/warning_icon.png">
+            <img src="/Icons/warning_icon.png">
             <span>Reports</span>
         </li>
 
         <li>
-            <img src="Icons/settings_icon.png">
+            <img src="/Icons/settings_icon.png">
             <span>Settings</span>
         </li>
     </ul>
@@ -266,25 +272,25 @@
         <div class="user-card">
             <h2>Total Users</h2>
             <p id="total">12,458</p>
-            <img alt="Total-user-icon" src="Icons/profile_icon.png" height="20px">
+            <img alt="Total-user-icon" src="/Icons/profile_icon.png" height="20px">
         </div>
 
         <div class="active-card">
             <h2>Active Users</h2>
             <p id="total-active"> 8,342</p>
-            <img alt="Active-users-icon" src="Icons/statistic_icon.png" height="20px">
+            <img alt="Active-users-icon" src="/Icons/statistic_icon.png" height="20px">
         </div>
 
         <div class="total-trails">
             <h2>Total Trails</h2>
             <p id="trails-amount">1,247</p>
-            <img alt="trails" src="Icons/location_icon.png" height="20px">
+            <img alt="trails" src="/Icons/location_icon.png" height="20px">
         </div>
 
         <div class="popular-trail">
             <h2>Popular Trails</h2>
             <p id="name-trail">Mt. Hood</p>
-            <img alt="icon-for-popular-trail" src="Icons/statistic2_icon.png" height="20px" >
+            <img alt="icon-for-popular-trail" src="/Icons/statistic2_icon.png" height="20px" >
         </div>
     </div>
 
@@ -296,6 +302,21 @@
 
 
     <!-- JAVA SCRIPT-->
+
+
+    <!-- ROUTEING  -->
+
+    <script>
+        function goToTrail(){
+            windows.location.href = "/admin/trails"
+        }
+    </script>
+
+    <script>
+        function goToUsers(){
+            window.location.href = "/admin/users"
+        }
+    </script>
 
     <!-- CHARTS -->
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
