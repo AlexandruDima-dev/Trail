@@ -5,6 +5,7 @@ const erl = require("express-rate-limit")
 const session = require("express-session")
 const nodemailer = require("nodemailer")
 const path = require("path")
+const { writeHeapSnapshot } = require("v8")
 
 
 
@@ -20,6 +21,8 @@ db.prepare(`
     username TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
+    role TEXT DEFAULT 'user',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     verified INTEGER DEFAULT 0,
     verfication_code TEXT
     )`).run()
@@ -108,127 +111,138 @@ app.use(session({
 
 // Sign Up
 
-app.get("/SignUp" ,async (req,res)=>{
-    res.sendFile(path.join(__dirname , "public" , "signin.html"))
-})
 
-app.post("/SignUp" , async (req,res) =>{
-    const specialChar = /[!@#$%^&*(),.?":{}|<>]/
-    const letter = /[A-Za-z]/
-    const number = /[0-9]/
-    const {username , email, password} = req.body
 
-    if(!username || !email || !password){
-         return res.status(404).json("We Cannot Find Your Data Please Try Agian!")
+// GET Sign Up page
+app.get("/signup", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "signin.html"));
+});
+
+// POST Sign Up
+app.post("/signup", async (req, res) => {
+    const { username, email, password } = req.body;
+
+    // Validation
+    const specialChar = /[!@#$%^&*(),.?":{}|<>]/;
+    const letter = /[A-Za-z]/;
+    const number = /[0-9]/;
+
+    if (!username || !email || !password) {
+        return res.status(400).json({ message: "Please fill in all fields" });
+    }
+    if (password.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+    if (!specialChar.test(password)) {
+        return res.status(400).json({ message: "Password must include a special character" });
+    }
+    if (!letter.test(password)) {
+        return res.status(400).json({ message: "Password must include letters" });
+    }
+    if (!number.test(password)) {
+        return res.status(400).json({ message: "Password must include a number" });
     }
 
-    if(username === ""|| username == null){
-        res.json({message:"Please Enter your Username"})
-    }else if(email === "" || email == null){
-        res.json({message:"Please Enter your Email"})
-    }else if(password === "" || password == null){
-        res.json({message:"Please Enter Your Password"})
-    }else if(password.length < 6){
-        res.json({message:"Your Password Must Be At Least 6 Characters"})
-    }else if(!specialChar.test(password)){
-        res.json({message:"Your Password Must Include A Special Character"})
-    }else if(!letter.test(password)){
-        res.json({message:"Your Password Must Include Letters"})
-    }else if(!number.test(password)){
-        res.json({message:"Your Password Must have a number"})
-    }
+    try {
+        // Check if user already exists
+        const existingUser = db.prepare("SELECT * FROM users WHERE email = ?").get(email);
+        if (existingUser) {
+            return res.status(400).json({ message: "Email already in use" });
+        }
 
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    try{
-    const hashedPassword = await bcrypt.hash(password, 10); //<-- Hashes Password
-    const code = Math.floor(100000 + Math.random()* 900000).toString();
+        // Generate verification code
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    db.prepare(`
-        INSERT INTO users (username, email, password, verfication_code) VALUES (?,?,?,?)
+        // Insert user into DB
+        db.prepare(`
+            INSERT INTO users (username, email, password, verfication_code)
+            VALUES (?, ?, ?, ?)
         `).run(username, email, hashedPassword, code);
 
+        // Store email in session for verification
         req.session.verifyEmail = email;
 
-    await transporter.sendMail({
-        from:"Trail App",
-        to:email,
-        subject: "Verify Your TRAIL Account",
-        html: `
-        <style>
-            .email{
-            background-color: #556b2f;
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            color: #f4f6f8;
-            border-radius: 14px;
-            text-align: center;
-            }
+        // Send verification email
+        await transporter.sendMail({
+            from: "Trail App",
+            to: email,
+            subject: "Verify Your TRAIL Account",
+            html: `
+            <div style="background-color:#556b2f; padding:30px; border-radius:14px; text-align:center; color:#f4f6f8; font-family:Verdana, Geneva, Tahoma, sans-serif;">
+                <h2>Trail</h2>
+                <p>Your Verification Code Is <strong>${code}</strong></p>
+            </div>
+            `
+        });
 
-        </style>
+        res.redirect("/verify");
 
-        <div class="email">
-            <h2>Trail</h2><br><br>
-            <p>Your Verifaction Code Is ${code}</p>
-        
-        </div>
-        `
-    })
-
-    res.redirect("/verify")
-    
-    
-    
-
-}catch(err){
-    res.status(501).json({message:"Email Already Is Used"})
-
-}
-})
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "An error occurred, please try again" });
+    }
+});
 
 
 // Verify Email
 
 app.get("/verify", (req,res)=>{
-    res.sendFile(path.join(__dirname, "public" , "verify.html"))
+    res.sendFile(path.join(__dirname, "public", "verify.html"))
 })
 
-app.post("/verify", (req,res)=>{
+app.post("/verify", (req, res) => {
     const enteredCode = req.body.code;
     const email = req.session.verifyEmail;
 
-    const user = db.prepare(`
-        SELECT * FROM users WHERE email =?
-        `).get(email);
-    
-    if (!user){
-        return res.status(401).json({message:"We Couldnt Find Your Email, Please try agian"})
+    if (!email) {
+        return res.status(400).json({ message: "No email in session. Please sign up first." });
     }
 
-    if(user.verfication_code !== enteredCode){
-        return res.status(401).json({message:"Wrong Code"})
+    const user = db.prepare("SELECT * FROM users WHERE email = ?").get(email);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
     }
+
+    if (user.verfication_code !== enteredCode) {
+        return res.status(401).json({ message: "Wrong verification code" });
+    }
+
 
     db.prepare(`
         UPDATE users
         SET verified = 1, verfication_code = NULL
         WHERE email = ?
-        `).run(email)
+    `).run(email);
 
-    res.redirect("/dashboard")
 
+    req.session.user = {
+        id: user.id,
+        email: user.email,
+        role: user.role
+    };
+
+    if (user.email === "alexandrucoding08@gmail.com") {
+        db.prepare("UPDATE users SET role = 'admin' WHERE email = ?").run(user.email);
+        req.session.user.role = "admin"; // update session role
+        return res.redirect("/admin/dashboard");
+    }
+
+
+    res.redirect("/dashboard");
 });
 
 app.get("/login", async (req, res)=>{
     res.sendFile(path.join(__dirname, "public", "login.html"))
 })
 
-app.post("/login", async (req,res) =>{
-    const{email, password} = req.body
-    if(!email || !password){
-        return res.status(404).json({message: "We Couldnt Find Your Data Please Try again"})
-    }
+app.post("/login", async (req, res) => {
+    const { email, password } = req.body;
 
-    if(email == "alexandruadmin05@gmail.com"){
-        
+    if (!email || !password) {
+        return res.status(404).json({ message: "We couldn't find your data, please try again" });
     }
     
     const users = db.prepare(`
@@ -236,25 +250,23 @@ app.post("/login", async (req,res) =>{
         
         `).get(email);
 
-    if(!users){
-        return res.status(404).json({message:"User Not Found"})
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
     }
 
-    if(!users.verified){
-        res.status(401).json({message:"Verify Your Account First"})
+    if (!user.verified) {
+        return res.status(401).json({ message: "Verify your account first" });
     }
 
-    const match = await bcrypt.compare(password, users.password);
-    if (!match){
-        return res.status(401).json({message:"Wrong Password"})
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+        return res.status(401).json({ message: "Wrong password" });
     }
+
 
     res.redirect("/dashboard")
 
 })
-
-
-
 
 
 // CONTACT
@@ -313,15 +325,6 @@ app.get("/api/trails", (req, res) => {
         res.status(500).json({ message: "Failed to fetch trails" });
     }
 });
-
-
-// Dashboard 
-//========================================================================================================
-app.get("/dashboard", (req,res)=>{
-    res.sendFile(path.join(__dirname, "public", "dashboard.html"))
-})
-
-
 
 
 
