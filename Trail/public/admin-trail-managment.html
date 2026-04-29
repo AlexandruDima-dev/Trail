@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Trail Admin - Trails</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trails- Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/Images/Normal Logo.png">
+</head>
 
 <style>
+
 :root{
-    --bg:#0f0f0f;
-    --panel:#4e4e4e8a;
-    --accent:#556b2f;
-    --danger:#8b2f2f;
-    --text:aliceblue;
+--bg:#0f0f0f;
+--panel:#4e4e4e8a;
+--accent:#556b2f;
+--danger:#8b2f2f;
+--text:aliceblue;
 }
 
 *{
@@ -28,8 +32,20 @@ body{
     color:var(--text);
 }
 
-/* SIDEBAR */
 .sidebar{
+    width: 260px;
+    background-color:#003b0f;
+    height: 100vh;
+    position: fixed;
+    top:0;
+    left: 0;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    transition:0.3s;
+}
+
+sidebar{
     width:260px;
     background:#003b0f;
     height:100vh;
@@ -39,6 +55,7 @@ body{
     padding:20px;
     display:flex;
     flex-direction:column;
+    transition:0.3s;
 }
 
 .logo h2{margin-bottom:5px;}
@@ -51,19 +68,18 @@ body{
     gap:10px;
 }
 
-.nav-links a{
-    text-decoration:none;
-    color:white;
+.nav-links li{
     display:flex;
     align-items:center;
     gap:10px;
     padding:12px;
     border-radius:10px;
+    cursor:pointer;
     transition:.2s;
 }
 
-.nav-links a:hover,
-.nav-links a.active{
+.nav-links li:hover,
+.nav-links li.active{
     background:var(--accent);
     transform:translateX(4px);
 }
@@ -73,229 +89,26 @@ body{
     height:20px;
 }
 
-/* MAIN */
-.main-container{
-    margin-left:260px;
-    padding:clamp(15px,3vw,40px);
-    width:100%;
-}
+    
 
-.title{
-    font-size:clamp(24px,4vw,40px);
-    font-weight:700;
-}
 
-.subtitle{
-    color:#cfcfcf;
-    margin-bottom:20px;
-}
-
-/* SEARCH */
-.search-bar{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    background:var(--panel);
-    backdrop-filter:blur(12px);
-    padding:15px;
-    border-radius:14px;
-    outline:2px solid #666;
-    margin-bottom:20px;
-}
-
-.search-bar input{
-    flex:1;
-    min-width:200px;
-    padding:10px;
-    border:none;
-    border-radius:10px;
-    background:#1f1f1f;
-    color:white;
-}
-
-.search-bar button{
-    background:var(--accent);
-    border:none;
-    padding:10px 15px;
-    border-radius:10px;
-    color:white;
-    cursor:pointer;
-}
-
-/* BUTTON */
-.add-btn{
-    background:var(--accent);
-    border:none;
-    padding:10px 15px;
-    border-radius:10px;
-    color:white;
-    cursor:pointer;
-}
-
-/* CARDS */
-.section-title{
-    margin:20px 0 10px;
-    font-size:20px;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:15px;
-}
-
-.card{
-    background:var(--panel);
-    backdrop-filter:blur(12px);
-    border-radius:16px;
-    overflow:hidden;
-    outline:2px solid #666;
-}
-
-.card img{
-    width:100%;
-    height:150px;
-    object-fit:cover;
-}
-
-.card-content{
-    padding:15px;
-}
-
-.tag{
-    display:inline-block;
-    background:#8b2f2f;
-    padding:3px 8px;
-    border-radius:8px;
-    font-size:12px;
-    margin-top:5px;
-}
-
-.actions{
-    display:flex;
-    gap:10px;
-    margin-top:10px;
-}
-
-.btn{
-    flex:1;
-    padding:8px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    color:white;
-}
-
-.approve{background:var(--accent);}
-.reject{background:var(--danger);}
-
-/* MOBILE */
-@media(max-width:900px){
-    .sidebar{display:none;}
-    .main-container{margin-left:0;}
-}
 </style>
-</head>
-
 <body>
 
-<!-- SIDEBAR -->
-<nav class="sidebar">
+    <nav class="sidebar" id="sidebar">
     <div class="logo">
         <h2>Trail</h2>
         <p>Admin Panel</p>
     </div>
 
-    <div class="nav-links">
-        <a href="/admin/dashboard" target="_blank">
-            <img src="/Icons/dashboard_icon.png"> Dashboard
-        </a>
-
-        <a href="/admin/users" target="_blank">
-            <img src="/Icons/profile_icon.png"> Users
-        </a>
-
-        <a class="active" href="/admin/trails" target="_blank">
-            <img src="/Icons/location_icon.png"> Trails
-        </a>
-
-        <a href="/admin/reports" target="_blank">
-            <img src="/Icons/warning_icon.png"> Reports
-        </a>
-
-        <a href="/admin/settings" target="_blank">
-            <img src="/Icons/settings_icon.png"> Settings
-        </a>
-    </div>
+    <ul class="nav-links">
+        <li onclick="getToDash()"><img src="/Icons/dashboard_icon.png"><span>Dashboard</span></li>
+        <li class="active"><img src="/Icons/profile_icon.png"><span>Users</span></li>
+        <li onclick="getToTrails()"><img src="/Icons/location_icon.png"><span>Trails</span></li>
+        <li><img src="/Icons/warning_icon.png"><span>Reports</span></li>
+        <li><img src="/Icons/settings_icon.png"><span>Settings</span></li>
+    </ul>
 </nav>
-
-<!-- MAIN -->
-<div class="main-container">
-
-    <h2 class="title">Trails</h2>
-    <p class="subtitle">Manage hiking trails and locations</p>
-
-    <div class="search-bar">
-        <input type="text" id="search" placeholder="Search trails...">
-        <button class="add-btn">+ Add Trail</button>
-    </div>
-
-    <h3 class="section-title">Pending Approval</h3>
-
-    <div class="grid">
-
-        <div class="card">
-            <img src="/Images/trail1.jpg">
-            <div class="card-content">
-                <h3>Red Rock Canyon</h3>
-                <p>Colorado, USA</p>
-                <span class="tag">Expert</span>
-
-                <div class="actions">
-                    <button class="btn approve">Approve</button>
-                    <button class="btn reject">Reject</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <h3 class="section-title">All Trails</h3>
-
-    <div class="grid" id="allTrails">
-
-        <div class="card">
-            <img src="/Images/trail2.jpg">
-            <div class="card-content">
-                <h3>Forest Path</h3>
-                <p>Scotland</p>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="/Images/trail3.jpg">
-            <div class="card-content">
-                <h3>Mountain Peak</h3>
-                <p>Alps</p>
-            </div>
-        </div>
-
-    </div>
-
-</div>
-
-<script>
-// simple search placeholder
-document.getElementById("search").addEventListener("input", (e)=>{
-    const value = e.target.value.toLowerCase();
-    const cards = document.querySelectorAll("#allTrails .card");
-
-    cards.forEach(card=>{
-        const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(value) ? "block" : "none";
-    });
-});
-</script>
-
+    
 </body>
 </html>
