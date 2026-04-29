@@ -104,6 +104,11 @@ app.use(session({
 }))
 
 
+//AUTHENTICATION
+// ==========================================================
+//===========================================================
+
+
 // Sign Up
 
 
@@ -239,8 +244,11 @@ app.post("/login", async (req, res) => {
     if (!email || !password) {
         return res.status(404).json({ message: "We couldn't find your data, please try again" });
     }
-
-    const user = db.prepare("SELECT * FROM users WHERE email = ?").get(email);
+    
+    const users = db.prepare(`
+        SELECT * FROM users WHERE email = ?
+        
+        `).get(email);
 
     if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -256,27 +264,13 @@ app.post("/login", async (req, res) => {
     }
 
 
-    req.session.user = {
-        id: user.id,
-        email: user.email,
-        role: user.role
-    };
+    res.redirect("/dashboard")
 
-    if (user.email === "alexandrucoding08@gmail.com" && user.role !== "admin") {
-        db.prepare("UPDATE users SET role = 'admin' WHERE email = ?").run(user.email);
-        req.session.user.role = "admin"; 
-    }
-
-
-    if (req.session.user.role === "admin") {
-        return res.redirect("/admin/dashboard");
-    } else {
-        return res.redirect("/dashboard");
-    }
-});
+})
 
 
 // CONTACT
+//============================================================================================
 
 app.get("/contact", (req,res)=>{
     res.sendFile(path.join(__dirname, "public", "contact.html"))
@@ -314,7 +308,10 @@ app.post("/contact", async (req,res)=>{
     res.status(200).json({message:"Conatct Form Has Been Sent Sucsesfully!"})
 })
 
+
+
 // API endpoint to get all trails
+//======================================================================================================
 
 app.get("/api/trails", (req, res) => {
     try {
@@ -328,38 +325,6 @@ app.get("/api/trails", (req, res) => {
         res.status(500).json({ message: "Failed to fetch trails" });
     }
 });
-
-
-
-//ADMIN DASHBOARD
-
-//================================
-//================================
-
-app.get("/admin/dashboard", (req,res)=>{
-    res.sendFile(path.join(__dirname,"public", "admin-dashboard.html"))
-})
-
-app.post("/admin/dashboard", (req,res)=>{
-    const wassap = "hey"
-    res.json(wassap)
-})
-
-
-//Users page Dashboard
-
-app.get("/admin/users", (req,res)=>{
-    res.sendFile(path.join(__dirname, "public", "admin-users.html"))
-})
-
-
-//Trail  Management
-
-app.get("/admin/trails", (req,res)=>{
-    res.sendFile(path.join(__dirname, "public", "admin-trail-managment.html"))
-})
-
-
 
 
 
