@@ -28,7 +28,7 @@
 body{
     min-height:100vh;
     display:flex;
-    background:url("/Images/admin-pannel.jpg") center/cover no-repeat;
+    background:url("Images/admin-pannel.jpg") center/cover no-repeat;
     color:var(--text);
 }
 
@@ -89,6 +89,59 @@ sidebar{
     height:20px;
 }
 
+.main-body{
+    display: flex;
+    flex-direction: column;
+}
+
+.add-trails{
+    margin-left: 300px;
+    background-color: #3b3b3ba9;
+    backdrop-filter: blur(12px);
+    outline: 2px solid #5c5c5c;
+    border-radius: 20px;
+
+    padding: 60px;
+    margin-top: 30px;
+    max-width: 900px;
+}
+
+.add-trails button{
+    padding: 10px;
+    border-radius: 30px;
+    border: none;
+
+    background-color: #556b2f;
+    color: aliceblue;
+    transition: all ease 0.3s;
+
+}
+
+.add-trails button:hover{
+    background-color: #003b0f;
+}
+
+.button-con{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+@media(max-width: 768px){
+
+    body{
+        display: flex;
+        flex-direction: column;
+    }
+   .add-trails{
+    align-self: center;
+    margin-left: 0px;
+    margin-top: 90px;
+   }
+}
+
+
+
     
 
 
@@ -103,12 +156,25 @@ sidebar{
 
     <ul class="nav-links">
         <li onclick="getToDash()"><img src="/Icons/dashboard_icon.png"><span>Dashboard</span></li>
-        <li class="active"><img src="/Icons/profile_icon.png"><span>Users</span></li>
-        <li onclick="getToTrails()"><img src="/Icons/location_icon.png"><span>Trails</span></li>
+        <li><img src="/Icons/profile_icon.png"><span>Users</span></li>
+        <li  class="active"><img src="/Icons/location_icon.png"><span>Trails</span></li>
         <li><img src="/Icons/warning_icon.png"><span>Reports</span></li>
         <li><img src="/Icons/settings_icon.png"><span>Settings</span></li>
     </ul>
 </nav>
+
+
+<div class="main-body">
+
+    <div class="add-trails">
+        <h2>Add New Trails.</h2><br>
+        <div class="button-con">
+            <button id="manual">Add Trails Manually</button><br>
+            <button id="Ai">Add Trails using AI</button>
+        </div>
+
+    </div>
+</div>
     
 </body>
 </html>
